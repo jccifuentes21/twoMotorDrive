@@ -1,4 +1,4 @@
-package com.juanka.twoMotorDrive.com.juanka.twoMotorDrive.controller;
+package com.juanka.twoMotorDrive.controller;
 
 import com.pi4j.io.gpio.*;
 import org.springframework.web.bind.annotation.RequestMapping;
