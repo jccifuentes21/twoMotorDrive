@@ -25,6 +25,8 @@ public class motorController {
         leftMotor.high();
         rightMotor.high();
         Thread.sleep(3000);
+        leftMotor.low();
+        rightMotor.low();
 
         gpio.shutdown();
         gpio.unprovisionPin(leftMotor);
