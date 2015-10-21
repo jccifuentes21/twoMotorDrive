@@ -26,6 +26,12 @@ public class motorController {
         rightMotor.high();
         Thread.sleep(3000);
 
+        gpio.shutdown();
+        gpio.unprovisionPin(leftMotor);
+        gpio.unprovisionPin(rightMotor);
+
+        System.out.println("Motors worked");
+
         return "Program was executed correctly";
 
     }
