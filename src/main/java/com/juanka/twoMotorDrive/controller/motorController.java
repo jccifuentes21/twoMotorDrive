@@ -7,34 +7,68 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class motorController {
 
-    @RequestMapping("/")
+    GpioController gpio = GpioFactory.getInstance();
+
+    GpioPinDigitalOutput leftBackMotor = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "Motor Izquierda", PinState.LOW);
+    GpioPinDigitalOutput rightBackMotor = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "Motor Derecha", PinState.LOW);
+    GpioPinDigitalOutput rightFrontMotor = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "Motor Derecha", PinState.LOW);
+    GpioPinDigitalOutput leftFrontMotor = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "Motor Derecha", PinState.LOW);
+
+    @RequestMapping("/index.html")
     public String start () {
 
         return "app is running ok.";
     }
 
-    @RequestMapping("/drive")
-    public String drive () throws InterruptedException{
+    @RequestMapping("/forward.html")
+    public String forward () throws InterruptedException{
 
-        GpioController gpio = GpioFactory.getInstance();
+        leftFrontMotor.high();
+        rightFrontMotor.high();
 
-        GpioPinDigitalOutput leftMotor = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "Motor Izquierda", PinState.LOW);
-        GpioPinDigitalOutput rightMotor = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "Motor Derecha", PinState.LOW);
+        return "Moving forward...";
 
+    }
 
-        leftMotor.high();
-        rightMotor.high();
-        Thread.sleep(3000);
-        leftMotor.low();
-        rightMotor.low();
+    @RequestMapping("/back.html")
+    public String back () throws InterruptedException{
+
+        leftBackMotor.high();
+        rightBackMotor.high();
+
+        return "Moving backwards...";
+
+    }
+
+    @RequestMapping("/right.html")
+    public String right () throws InterruptedException{
+
+        leftFrontMotor.toggle();
+        rightFrontMotor.toggle();
+
+        return "Moving right...";
+
+    }
+
+    @RequestMapping("/left.html")
+    public String left () throws InterruptedException{
+
+        leftFrontMotor.toggle();
+        rightFrontMotor.toggle();
+
+        return "Moving left...";
+
+    }
+
+    @RequestMapping("/shutdown.html")
+    public String shutdown () {
 
         gpio.shutdown();
-        gpio.unprovisionPin(leftMotor);
-        gpio.unprovisionPin(rightMotor);
+        gpio.unprovisionPin(leftBackMotor);
+        gpio.unprovisionPin(rightBackMotor);
+        gpio.unprovisionPin(rightFrontMotor);
+        gpio.unprovisionPin(leftFrontMotor);
 
-        System.out.println("Motors worked");
-
-        return "Program was executed correctly";
-
+        return "Program was shutdown correctly";
     }
 }
