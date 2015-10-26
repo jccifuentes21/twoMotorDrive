@@ -14,13 +14,13 @@ public class motorController {
     GpioPinDigitalOutput rightFrontMotor = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02, "Motor Derecha", PinState.LOW);
     GpioPinDigitalOutput leftFrontMotor = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03, "Motor Derecha", PinState.LOW);
 
-    @RequestMapping("/index.html")
+    @RequestMapping("/index")
     public String start () {
 
         return "app is running ok.";
     }
 
-    @RequestMapping("/forward.html")
+    @RequestMapping("/forward.htmlc")
     public String forward () throws InterruptedException{
 
         leftFrontMotor.high();
@@ -64,6 +64,10 @@ public class motorController {
     public String shutdown () {
 
         gpio.shutdown();
+        leftBackMotor.low();
+        leftFrontMotor.low();
+        rightBackMotor.low();
+        rightFrontMotor.low();
         gpio.unprovisionPin(leftBackMotor);
         gpio.unprovisionPin(rightBackMotor);
         gpio.unprovisionPin(rightFrontMotor);
